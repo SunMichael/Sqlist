@@ -33,11 +33,11 @@ NSString *const stringTwo =@"stringTwo";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view, typically from a nib.
+    // Do any additional setup after loading the view, typically from a nib.
     
     //    static NSString *static2 =@"aaaaaaa";
     
-    
+    //SQL语句是不区分大小写的
     NSArray* dirPaths =NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString* docsDir =[dirPaths objectAtIndex:0];
     
@@ -50,57 +50,60 @@ NSString *const stringTwo =@"stringTwo";
     }else{
         NSLog(@" open OK== %d",sqlite3_open([dataBasePath UTF8String], &contactDB));
     }
-    /*
-    NSArray* dirPaths2 = NSSearchPathForDirectoriesInDomains(NSDocumentationDirectory, NSUserDomainMask, YES);
-    NSString *docsDir2 =[dirPaths2 objectAtIndex:0];
-    dataBasePath =[[NSString alloc]initWithString:[docsDir2 stringByAppendingString:@"person.sqlite"]];
     
-    if (sqlite3_open([dataBasePath UTF8String], &contactDB) !=SQLITE_OK) {
-        sqlite3_close(contactDB);
-        NSLog(@"  open sqlite fail");
-    }
-   
-    
-    NSArray *directorPaths =NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentDir =[directorPaths objectAtIndex:0];
-    newDataPath =[[NSString alloc]initWithString:[documentDir stringByAppendingPathComponent:@"newPersons.sqlite"]];
-    if (sqlite3_open([newDataPath UTF8String], &contactDB) != SQLITE_OK) {
-        sqlite3_close(contactDB);
-        NSLog(@"  打开失败 ");
-    }
-     
-    NSString *sqliteCreateTable =@"CREATE TABLE IF NOT EXISTS NEWPERSONS (ID INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT ,phone TEXT )";
-    [self execSqlite:sqliteCreateTable];
-    
-    NSString *sqliteOne =[NSString stringWithFormat:@"INSERT INTO '%@' ('%@','%@') VALUES ('%@' ,'%@')",TABLENAME,NAME,PHONE,NAMEONE,PHONEONE];
-    [self execSqlite:sqliteOne];
-    
-    NSString *sqliteTWO =[NSString stringWithFormat:@"INSERT INTO '%@' ('%@' ,'%@') VALUES ('%@' ,'%@')",TABLENAME ,NAME,PHONE,NAMETWO,PHONETWO];
-    [self execSqlite:sqliteTWO];
-    */
     NSString* sqlCreateTable =@"CREATE TABLE IF NOT EXISTS PERSON (ID INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT,phone TEXT)";
     [self execSqlite:sqlCreateTable];
     
     /*
-    NSFileManager* fileMgr =[NSFileManager defaultManager];
-    
-    if ([fileMgr fileExistsAtPath:dataBasePath] ==NO) {
-        const char* dbpath =[dataBasePath UTF8String];
-        if (sqlite3_open(dbpath, &contactDB) ==SQLITE_OK) {
-            char *errMsg;
-            const char *sql_stmt = "CREATE TABLE IF NOT EXISTS PERSON(ID INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, phone TEXT)";
-            if (sqlite3_exec(contactDB, sql_stmt, NULL, NULL, &errMsg) !=SQLITE_OK) {
-                NSLog(@" 创建表失败");
-            }else {
-                NSLog(@"  创建表成功");
-            }
-        }
-        else{
-            NSLog(@" 创建数据库失败");
-        }
-    }
+     NSArray* dirPaths2 = NSSearchPathForDirectoriesInDomains(NSDocumentationDirectory, NSUserDomainMask, YES);
+     NSString *docsDir2 =[dirPaths2 objectAtIndex:0];
+     dataBasePath =[[NSString alloc]initWithString:[docsDir2 stringByAppendingString:@"person.sqlite"]];
+     
+     if (sqlite3_open([dataBasePath UTF8String], &contactDB) !=SQLITE_OK) {
+     sqlite3_close(contactDB);
+     NSLog(@"  open sqlite fail");
+     }
+     
+     
+     NSArray *directorPaths =NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+     NSString *documentDir =[directorPaths objectAtIndex:0];
+     newDataPath =[[NSString alloc]initWithString:[documentDir stringByAppendingPathComponent:@"newPersons.sqlite"]];
+     if (sqlite3_open([newDataPath UTF8String], &contactDB) != SQLITE_OK) {
+     sqlite3_close(contactDB);
+     NSLog(@"  打开失败 ");
+     }
+     
+     NSString *sqliteCreateTable =@"CREATE TABLE IF NOT EXISTS NEWPERSONS (ID INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT ,phone TEXT )";
+     [self execSqlite:sqliteCreateTable];
+     
+     NSString *sqliteOne =[NSString stringWithFormat:@"INSERT INTO '%@' ('%@','%@') VALUES ('%@' ,'%@')",TABLENAME,NAME,PHONE,NAMEONE,PHONEONE];
+     [self execSqlite:sqliteOne];
+     
+     NSString *sqliteTWO =[NSString stringWithFormat:@"INSERT INTO '%@' ('%@' ,'%@') VALUES ('%@' ,'%@')",TABLENAME ,NAME,PHONE,NAMETWO,PHONETWO];
+     [self execSqlite:sqliteTWO];
      */
-//    NSLog(@" fileExist == %d  %@",[fileMgr fileExistsAtPath:dataBasePath],dataBasePath);
+    
+    
+    /*
+     NSFileManager* fileMgr =[NSFileManager defaultManager];
+     
+     if ([fileMgr fileExistsAtPath:dataBasePath] ==NO) {
+     const char* dbpath =[dataBasePath UTF8String];
+     if (sqlite3_open(dbpath, &contactDB) ==SQLITE_OK) {
+     char *errMsg;
+     const char *sql_stmt = "CREATE TABLE IF NOT EXISTS PERSON(ID INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, phone TEXT)";
+     if (sqlite3_exec(contactDB, sql_stmt, NULL, NULL, &errMsg) !=SQLITE_OK) {
+     NSLog(@" 创建表失败");
+     }else {
+     NSLog(@"  创建表成功");
+     }
+     }
+     else{
+     NSLog(@" 创建数据库失败");
+     }
+     }
+     */
+    //    NSLog(@" fileExist == %d  %@",[fileMgr fileExistsAtPath:dataBasePath],dataBasePath);
     
 }
 -(void)execSqlite:(NSString *)sqlStr{
@@ -180,8 +183,8 @@ NSString *const stringTwo =@"stringTwo";
             
             NSLog(@" sb  ==%d ",sqlite3_step(statement));
         }
-//        sqlite3_finalize(statement);       //释放sqlite3_stmt，如果使用完sqlite3_stmt不执行释放，就会造成内存泄露。
-//        sqlite3_close(contactDB);          //关闭已经打开了的数据库，也就是有释放内存的功能
+        //        sqlite3_finalize(statement);       //释放sqlite3_stmt，如果使用完sqlite3_stmt不执行释放，就会造成内存泄露。
+        //        sqlite3_close(contactDB);          //关闭已经打开了的数据库，也就是有释放内存的功能
     }
     
     
@@ -207,9 +210,12 @@ NSString *const stringTwo =@"stringTwo";
 - (IBAction)clickCheck:(id)sender {
     
     
-    NSString* sqlQuery =[NSString stringWithFormat:@"SELECT phone FROM person WHERE name='%@'",self.nameText.text];
-    //    NSString* sqlQuery =@"SELECT * FROM PERSON";
-    //    NSString* sqlQuery =[NSString stringWithFormat:@"SELECT phone from person where name=\"%@\"",self.nameText.text];
+    //    NSString* sqlQuery =[NSString stringWithFormat:@"SELECT phone FROM person WHERE name='%@'",self.nameText.text];
+    
+    NSString* sqlQuery =[NSString stringWithFormat:@"select phone from person where name=\"%@\"",self.nameText.text];
+    
+    //以上2种都能查询
+    
     sqlite3_stmt *statement;
     if (sqlite3_prepare_v2(contactDB, [sqlQuery UTF8String], -1, &statement, nil) ==SQLITE_OK) {
         if (sqlite3_step(statement) ==SQLITE_ROW) {
